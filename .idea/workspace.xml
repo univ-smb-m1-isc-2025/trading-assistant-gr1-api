@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb1e8f13-6d03-4242-b606-85bd519041ad" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/build-pipeline.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/build-pipeline.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +116,7 @@
       <workItem from="1737736710395" duration="195000" />
       <workItem from="1738935825616" duration="2457000" />
       <workItem from="1738944281925" duration="984000" />
-      <workItem from="1738945494483" duration="2128000" />
+      <workItem from="1738945494483" duration="2937000" />
     </task>
     <servers />
   </component>
