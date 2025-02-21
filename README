@@ -1,0 +1,29 @@
+# Trading Assistant API
+
+## Description
+Ce projet est une API pour un assistant de trading, développée en utilisant Spring Boot. Elle fournit des informations et des services pour aider les utilisateurs à prendre des décisions de trading.
+
+## Prérequis
+- Java 11 ou supérieur
+- Maven 3.6.0 ou supérieur
+
+## Installation
+Clonez le dépôt sur votre machine locale :
+```bash
+git clone https://github.com/univ-smb-m1-isc-2025/trading-assistant-gr1-api
+cd trading-assistant-gr1-api
+```
+
+## Commande pour lancer
+Pour démarrer l'application, utilisez la commande suivante :
+```bash
+mvn spring-boot:run
+```
+
+## Utilisation
+Une fois l'application démarrée, vous pouvez accéder à l'API à l'adresse suivante :
+[http://localhost:8080/api/info](http://localhost:8080/api/info)
+
+## Endpoints
+- `GET /api/info` : Retourne des informations sur l'API.
+
