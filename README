@@ -24,6 +24,12 @@ mvn spring-boot:run
 Une fois l'application démarrée, vous pouvez accéder à l'API à l'adresse suivante :
 [http://localhost:8080/api/info](http://localhost:8080/api/info)
 
+
+## Site
+[API](api.TradeMate.oups.net)
+[Web](www.TradeMate.oups.net)
+
+
 ## Endpoints
 - `GET /api/info` : Retourne des informations sur l'API.
 

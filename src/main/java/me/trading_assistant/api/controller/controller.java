@@ -1,12 +1,8 @@
 package me.trading_assistant.api.controller;
 
+import org.springframework.web.bind.annotation.*;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-// import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,5 +21,6 @@ public class controller {
             "version", "1.0.0"
         );
     }
-
 }
+
+

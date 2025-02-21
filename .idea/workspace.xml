@@ -5,8 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb1e8f13-6d03-4242-b606-85bd519041ad" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/application/TrademateService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/Initializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README" beforeDir="false" afterPath="$PROJECT_DIR$/README" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +24,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -31,7 +40,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/univ-smb-m1-isc-2025/trading-assistant-gr1-api.git&quot;,
+    &quot;url&quot;: &quot;https://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@github.com/univ-smb-m1-isc-2025/trading-assistant-gr1-api&quot;,
     &quot;accountId&quot;: &quot;3eec2dad-8bb3-41f5-9bfa-db28d841eb0f&quot;
   }
 }</component>
@@ -61,6 +70,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -89,7 +99,9 @@
       <method v="2" />
     </configuration>
     <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
-      <deployment type="dockerfile" />
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
       <method v="2" />
     </configuration>
     <recent_temporary>
@@ -101,8 +113,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.189" />
-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.189" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
       </set>
     </attachedChunks>
   </component>
@@ -118,10 +130,22 @@
       <workItem from="1738935825616" duration="2457000" />
       <workItem from="1738944281925" duration="984000" />
       <workItem from="1738945494483" duration="4429000" />
+      <workItem from="1740151596703" duration="29000" />
+      <workItem from="1740151633583" duration="102000" />
+      <workItem from="1740151742385" duration="79000" />
+      <workItem from="1740151829370" duration="342000" />
+      <workItem from="1740152178958" duration="19000" />
+      <workItem from="1740152203128" duration="770000" />
+      <workItem from="1740153393487" duration="10000" />
+      <workItem from="1740153407779" duration="6766000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
