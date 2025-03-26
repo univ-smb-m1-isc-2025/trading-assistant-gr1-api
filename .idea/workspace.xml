@@ -5,15 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb1e8f13-6d03-4242-b606-85bd519041ad" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/application/TrademateService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/Initializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README" beforeDir="false" afterPath="$PROJECT_DIR$/README" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/ApiApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/ApiApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/application/TrademateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/application/TrademateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/controller.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/Initializer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,7 +40,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://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@github.com/univ-smb-m1-isc-2025/trading-assistant-gr1-api&quot;,
+    &quot;url&quot;: &quot;https://github.com/univ-smb-m1-isc-2025/trading-assistant-gr1-api.git&quot;,
     &quot;accountId&quot;: &quot;3eec2dad-8bb3-41f5-9bfa-db28d841eb0f&quot;
   }
 }</component>
@@ -52,28 +52,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Docker.Dockerfile.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.Application.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/cyril/Documents/Cours/INFO803/trading-assistant-gr1-api",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.Dockerfile.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.Application.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/cyril/Documents/Cours/INFO803/trading-assistant-gr1-api&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Docker.Dockerfile">
     <configuration name="ApiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="api" />
@@ -113,8 +113,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
-        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -138,6 +138,8 @@
       <workItem from="1740152203128" duration="770000" />
       <workItem from="1740153393487" duration="10000" />
       <workItem from="1740153407779" duration="6766000" />
+      <workItem from="1743000772927" duration="128000" />
+      <workItem from="1743000922056" duration="1539000" />
     </task>
     <servers />
   </component>

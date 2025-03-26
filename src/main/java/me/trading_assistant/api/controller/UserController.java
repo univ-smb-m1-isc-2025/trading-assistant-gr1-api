@@ -1,42 +1,38 @@
 package me.trading_assistant.api.controller;
 
-
+import me.trading_assistant.api.infrastructure.User;
 import me.trading_assistant.api.application.TrademateService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import me.trading_assistant.api.infrastructure.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
 
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
-    private final TrademateService trademateService;
+    @Autowired
+    private TrademateService trademateService;
 
-    public UserController(TrademateService trademateService) {
-        this.trademateService = trademateService;
+    @GetMapping
+    public List<User> getAllUsers() {
+        return trademateService.getAllUsers();
     }
 
-
-    @GetMapping("/api/users")
-    public List<String> getUsers() {
-        logger.info("Getting list of users");
-        return trademateService.getUsers()
-                .stream()
-                .map(user -> user.getFirstname() + " " + user.getLastname())
-                .toList();
+    @GetMapping("/{user_id}")
+    public User getUserById(@PathVariable Long user_id) {
+        return trademateService.getUserById(user_id);
     }
 
-    @DeleteMapping("/api/users/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        logger.info("Deleting user with id {}", id);
-        trademateService.deleteUser(id);
+    @PostMapping
+    public User createUser(@RequestBody User user) {
+        return trademateService.saveUser(user);
     }
 
-    @GetMapping("/api/test")
-    public String test() {
-        return "Hello, World!";
+    @DeleteMapping("/{user_id}")
+    public void deleteUser(@PathVariable Long user_id) {
+        trademateService.deleteUser(user_id);
     }
 
 }

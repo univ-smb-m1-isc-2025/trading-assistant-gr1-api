@@ -14,20 +14,9 @@ public class User {
     private String firstname;
     private String lastname;
     private String email;
-    private Integer telephone;
-    private String password;
 
-    public User() {
-        //JPA
-    }
 
-    public User(String firstname, String lastname, String email, Integer telephone, String password) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.telephone = telephone;
-        this.password = password;
-    }
+
 
     public Long getId() {
         return id;
@@ -45,9 +34,7 @@ public class User {
         this.firstname = firstname;
     }
 
-    public String getLastname() {
-        return lastname;
-    }
+    public String getLastname() {return lastname;}
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
@@ -61,21 +48,6 @@ public class User {
         this.email = email;
     }
 
-    public Integer getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(Integer telephone) {
-        this.telephone = telephone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
 
 }
