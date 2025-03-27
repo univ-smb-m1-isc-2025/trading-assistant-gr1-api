@@ -1,33 +1,37 @@
 package me.trading_assistant.api.application;
 
-import me.trading_assistant.api.infrastructure.User;
-import me.trading_assistant.api.infrastructure.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import me.trading_assistant.api.infrastructure.Account;
+import me.trading_assistant.api.infrastructure.AccountRepository;
+// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class TrademateService {
 
-    @Autowired
-    private UserRepository userRepository;
+    
+    private final AccountRepository accountRepository;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+
+    public List<Account> getAllAccounts() {
+        return accountRepository.findAll();
     }
 
-    public User getUserById(Long user_id) {
-        return userRepository.findById(user_id).orElse(null);
+    public Account getAccountById(Long account_id) {
+        return accountRepository.findById(account_id).orElse(null);
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public Account createAccount(Account account) {
+        return accountRepository.save(account);
     }
 
-    public void deleteUser(Long user_id) {
-        userRepository.deleteById(user_id);
+    public void deleteAccount(Long account_id) {
+        accountRepository.deleteById(account_id);
     }
 
 

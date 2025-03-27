@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb1e8f13-6d03-4242-b606-85bd519041ad" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/ApiApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/ApiApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/application/TrademateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/application/TrademateService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/controller/controller.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/Initializer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/infrastructure/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-    </list>
+    <list default="true" id="cb1e8f13-6d03-4242-b606-85bd519041ad" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,6 +37,7 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2s5DnKSPdF6DtJEeOVLIyOFEFF1" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -140,6 +130,7 @@
       <workItem from="1740153407779" duration="6766000" />
       <workItem from="1743000772927" duration="128000" />
       <workItem from="1743000922056" duration="1539000" />
+      <workItem from="1743005676755" duration="28000" />
     </task>
     <servers />
   </component>

@@ -17,7 +17,9 @@ cd trading-assistant-gr1-api
 ## Commande pour lancer
 Pour démarrer l'application, utilisez la commande suivante :
 ```bash
-mvn spring-boot:run
+cd dev-station
+docker-compose down --rmi all
+docker-compose up --build
 ```
 
 ## Utilisation

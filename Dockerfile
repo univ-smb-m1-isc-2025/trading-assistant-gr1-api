@@ -1,7 +1,14 @@
-FROM eclipse-temurin:17-jre-alpine
+FROM openjdk:21-slim
 
-COPY ./target/api-0.0.1-SNAPSHOT.jar .
+WORKDIR /app
+ 
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+COPY src ./src
+RUN chmod +x ./mvnw
+
+RUN ./mvnw dependency:go-offline
 
 EXPOSE 8080
-
-CMD ["sh","-c","java -XX:InitialRAMPercentage=50 -XX:MaxRAMPercentage=70  -XshowSettings $JAVA_OPTS -jar api-0.0.1-SNAPSHOT.jar"]
+ 
+ENTRYPOINT ["./mvnw", "spring-boot:run"]
