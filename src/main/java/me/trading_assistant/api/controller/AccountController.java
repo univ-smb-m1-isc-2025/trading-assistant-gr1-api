@@ -2,8 +2,6 @@ package me.trading_assistant.api.controller;
 
 import me.trading_assistant.api.infrastructure.Account;
 import me.trading_assistant.api.application.TrademateService;
-// import me.trading_assistant.api.infrastructure.AccountRepository;
-// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
