@@ -1,14 +1,14 @@
-FROM openjdk:21-slim
+# Utiliser une image JRE légère pour exécuter l'application
+FROM eclipse-temurin:17-jre-alpine
 
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
- 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-COPY src ./src
-RUN chmod +x ./mvnw
 
-RUN ./mvnw dependency:go-offline
+# Copier le fichier .jar généré dans le conteneur
+COPY ./target/api-0.0.1-SNAPSHOT.jar app.jar
 
+# Exposer le port 8080 pour l'application
 EXPOSE 8080
- 
-ENTRYPOINT ["./mvnw", "spring-boot:run"]
+
+# Commande pour exécuter l'application
+CMD ["java", "-XX:InitialRAMPercentage=50", "-XX:MaxRAMPercentage=70", "-XshowSettings", "-jar", "app.jar"]
