@@ -14,12 +14,12 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
     private Long id;
-    private String firstname;
+
     private String lastname;
+    private String firstname;
     private String email;
-    private String password;
     private String phone;
+    private String password;
 
 }
