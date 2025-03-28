@@ -2,7 +2,6 @@ package me.trading_assistant.api.application;
 
 import me.trading_assistant.api.infrastructure.Account;
 import me.trading_assistant.api.infrastructure.AccountRepository;
-// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
