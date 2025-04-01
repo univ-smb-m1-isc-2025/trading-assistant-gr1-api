@@ -44,4 +44,10 @@ public class AccountController {
         trademateService.deleteAccount(account_id);
     }
 
+    @GetMapping("/test")
+    @Operation(summary = "Test si l'API fonctionne")
+    public String test() {
+        return "Bienvenue sur l'API Trading Assistant !";
+    }
+
 }
