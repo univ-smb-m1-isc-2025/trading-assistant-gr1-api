@@ -33,5 +33,9 @@ public class TrademateService {
         accountRepository.deleteById(account_id);
     }
 
+    public Account getAccountByEmail(String email) {
+        return accountRepository.findByEmail(email).orElse(null);
+    }
+
 
 }

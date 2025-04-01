@@ -1,6 +1,7 @@
 package me.trading_assistant.api.controller;
 
 import me.trading_assistant.api.infrastructure.Account;
+import me.trading_assistant.api.infrastructure.LoginRequest;
 import me.trading_assistant.api.application.TrademateService;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,17 @@ public class AccountController {
     @Operation(summary = "Supprimer un compte par son ID")
     public void deleteAccount(@PathVariable Long account_id) {
         trademateService.deleteAccount(account_id);
+    }
+
+    @PostMapping("/login")
+    @Operation(summary = "Connexion d'un utilisateur")
+    public String login(@RequestBody LoginRequest loginRequest) {
+        Account account = trademateService.getAccountByEmail(loginRequest.getEmail());
+        if (account != null && account.getPassword().equals(loginRequest.getPassword())) {
+            return "Connexion réussie !";
+        } else {
+            throw new RuntimeException("Email ou mot de passe incorrect.");
+        }
     }
 
     @GetMapping("/test")

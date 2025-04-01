@@ -29,15 +29,14 @@ public class CorsConfig implements WebMvcConfigurer {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
 
+        System.out.println("CORS configuration applied: " + corsConfig);
+
         return new CorsFilter(source); // Créer et retourner un CorsFilter
     }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "http://www.trademate.oups.net")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true);
-    }
 }
+
+
+// curl -X POST http://localhost:8080/api/users \
+// -H "Origin: http://localhost:5173" \
+// -H "Content-Type: application/json" \
+// -d '{"firstname": "Mathis","lastname": "Feltrin","email": "mathis.feltrin@gmail.com","password": "meilleur test","phone": "0133555566"}'
