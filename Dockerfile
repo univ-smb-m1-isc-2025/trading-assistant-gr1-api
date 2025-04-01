@@ -5,7 +5,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Copier le fichier .jar généré dans le conteneur
-COPY ../trading-assistant-gr1-api/target/api-0.0.2-SNAPSHOT.jar app.jar
+COPY ./target/api-0.0.1-SNAPSHOT.jar app.jar
 
 # Exposer le port 8080 pour l'application
 EXPOSE 8080
