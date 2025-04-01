@@ -13,7 +13,7 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/users/**") // Autorise toutes les routes
+                registry.addMapping("/**") // Autorise toutes les routes
                         .allowedOrigins("http://localhost:5173", "https://www.trademate.oups.net") // Autorise toutes les origines (remplacez par des domaines spécifiques si nécessaire)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Autorise les méthodes HTTP
                         .allowedHeaders("*") // Autorise tous les en-têtes
