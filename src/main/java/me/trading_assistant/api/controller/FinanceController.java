@@ -1,6 +1,7 @@
 package me.trading_assistant.api.controller;
 
 import me.trading_assistant.api.application.FinanceService;
+import me.trading_assistant.api.application.CandlePatternService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-
 import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/finance")
@@ -23,6 +24,7 @@ import java.util.Map;
 public class FinanceController {
 
     private final FinanceService financeService;
+    private final CandlePatternService patternService;
 
     @GetMapping("chart/{symbol}")
     @Operation(summary = "Récupérer les données du graphique d'une action par son symbole et sa plage")
@@ -37,4 +39,25 @@ public class FinanceController {
         }
     }
 
+    @GetMapping("patterns/{symbol}")
+    @Operation(summary = "Détecter les patterns de chandeliers pour une action")
+    public ResponseEntity<?> detectPatterns(
+            @PathVariable String symbol,
+            @RequestParam String range) {
+        try {
+            Map<String, Object> chartData = financeService.getStockChart(symbol, range);
+            Map<String, Object> patterns = patternService.detectPatterns(chartData);
+            
+            // Créer une nouvelle réponse avec uniquement les informations essentielles
+            Map<String, Object> response = new HashMap<>();
+            response.put("symbol", symbol);
+            response.put("range", range);
+            response.put("candles", patterns.get("candles"));
+            
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }
+

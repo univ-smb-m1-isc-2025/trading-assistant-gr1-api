@@ -4,6 +4,7 @@ import me.trading_assistant.api.config.JWT.JwtUtil;
 import me.trading_assistant.api.infrastructure.Account;
 import me.trading_assistant.api.infrastructure.LoginRequest;
 import me.trading_assistant.api.application.TrademateService;
+import org.springframework.security.core.userdetails.User;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 import java.util.List;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/users")
@@ -39,8 +41,30 @@ public class AccountController {
 
     @PostMapping
     @Operation(summary = "Créer un compte")
-    public Account createAccount(@RequestBody Account account) {
-        return trademateService.createAccount(account);
+    public ResponseEntity<?> createAccount(@RequestBody Account account) {
+        // Créer le compte
+        Account createdAccount = trademateService.createAccount(account);
+        
+        // Créer un map avec les informations de l'utilisateur
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("id", createdAccount.getId());
+        userInfo.put("nom", createdAccount.getLastname());
+        userInfo.put("prenom", createdAccount.getFirstname());
+        userInfo.put("telephone", createdAccount.getPhone());
+        userInfo.put("password", createdAccount.getPassword());
+        
+        // Générer un token JWT avec les informations de l'utilisateur
+        String token = jwtUtil.generateTokenWithUserInfo(
+            User.builder()
+                .username(createdAccount.getEmail())
+                .password(createdAccount.getPassword())
+                .authorities("USER")
+                .build(),
+            userInfo
+        );
+        
+        // Retourner uniquement le token
+        return ResponseEntity.ok(Map.of("token", token));
     }
 
     @DeleteMapping("/{account_id}")
@@ -54,8 +78,23 @@ public class AccountController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Account account = trademateService.getAccountByEmail(loginRequest.getEmail());
         if (account != null && account.getPassword().equals(loginRequest.getPassword())) {
-            // Générer un token JWT
-            String token = jwtUtil.generateToken(account.getEmail());
+            // Créer un map avec les informations de l'utilisateur
+            Map<String, Object> userInfo = new HashMap<>();
+            userInfo.put("id", account.getId());
+            userInfo.put("nom", account.getLastname());
+            userInfo.put("prenom", account.getFirstname());
+            userInfo.put("telephone", account.getPhone());
+            userInfo.put("password", account.getPassword());
+            
+            // Générer un token JWT avec les informations de l'utilisateur
+            String token = jwtUtil.generateTokenWithUserInfo(
+                User.builder()
+                    .username(account.getEmail())
+                    .password(account.getPassword())
+                    .authorities("USER")
+                    .build(),
+                userInfo
+            );
             return ResponseEntity.ok(Map.of("token", token));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou mot de passe incorrect.");
