@@ -1,14 +1,19 @@
 package me.trading_assistant.api.controller;
 
+import me.trading_assistant.api.config.JWT.JwtUtil;
 import me.trading_assistant.api.infrastructure.Account;
 import me.trading_assistant.api.infrastructure.LoginRequest;
 import me.trading_assistant.api.application.TrademateService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Map;
 import java.util.List;
 
 @RestController
@@ -17,9 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountController {
 
-    
+    private final JwtUtil jwtUtil;
     private final TrademateService trademateService;
-
 
     @GetMapping("/all")
     @Operation(summary = "Récupérer la liste de tous les comptes")
@@ -47,12 +51,14 @@ public class AccountController {
 
     @PostMapping("/login")
     @Operation(summary = "Connexion d'un utilisateur")
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Account account = trademateService.getAccountByEmail(loginRequest.getEmail());
         if (account != null && account.getPassword().equals(loginRequest.getPassword())) {
-            return "Connexion réussie !";
+            // Générer un token JWT
+            String token = jwtUtil.generateToken(account.getEmail());
+            return ResponseEntity.ok(Map.of("token", token));
         } else {
-            throw new RuntimeException("Email ou mot de passe incorrect.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou mot de passe incorrect.");
         }
     }
 
