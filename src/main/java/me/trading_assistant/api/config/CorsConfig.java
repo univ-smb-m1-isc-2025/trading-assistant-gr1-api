@@ -15,7 +15,7 @@ public class CorsConfig implements WebMvcConfigurer {
     public CorsFilter corsFilter() {
         // Créer une configuration CORS
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.addAllowedOrigin("http://localhost");
+        corsConfig.addAllowedOrigin("http://localhost:5173");
         corsConfig.addAllowedOrigin("https://www.trademate.oups.net");
         corsConfig.addAllowedMethod("GET");
         corsConfig.addAllowedMethod("POST");
