@@ -1,10 +1,12 @@
 package me.trading_assistant.api.infrastructure;
 
 import jakarta.persistence.*;
-
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "accounts")
@@ -16,10 +18,23 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String lastname;
-    private String firstname;
+    @Column(nullable = false, unique = true)
     private String email;
-    private String phone;
+
+    @Column(nullable = false)
+    private String firstname;
+
+    @Column(nullable = false)
+    private String lastname;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column
+    private String phone;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<UserAlert> alerts; 
 
 }
