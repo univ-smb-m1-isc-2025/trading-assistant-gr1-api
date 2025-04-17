@@ -59,5 +59,30 @@ public class FinanceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping("combined/{symbol}")
+    @Operation(summary = "Récupérer les données combinées des routes chart et patterns")
+    public ResponseEntity<?> getCombinedData(
+            @PathVariable String symbol,
+            @RequestParam String range) {
+        try {
+            // Appeler le service pour récupérer les données du graphique (chart)
+            Map<String, Object> chartData = financeService.getStockChart(symbol, range);
+    
+            // Appeler le service pour détecter les patterns
+            Map<String, Object> patternsData = patternService.detectPatterns(chartData);
+    
+            // Combiner les deux réponses dans un JSON
+            Map<String, Object> combinedResponse = new HashMap<>();
+            combinedResponse.put("chart", chartData);
+            combinedResponse.put("patterns", patternsData);
+    
+            return ResponseEntity.ok(combinedResponse);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Une erreur s'est produite : " + e.getMessage()));
+        }
+    }
+    
 }
 

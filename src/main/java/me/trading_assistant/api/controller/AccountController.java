@@ -42,6 +42,13 @@ public class AccountController {
     @PostMapping
     @Operation(summary = "Créer un compte")
     public ResponseEntity<?> createAccount(@RequestBody Account account) {
+
+        // Vérifier si l'email existe déjà
+        if (trademateService.getAccountByEmail(account.getEmail()) != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Un compte avec cet email existe déjà.");
+        }
+
         // Créer le compte
         Account createdAccount = trademateService.createAccount(account);
         
