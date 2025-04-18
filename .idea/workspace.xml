@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb1e8f13-6d03-4242-b606-85bd519041ad" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/me/trading_assistant/api/application/EmailServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/application/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/trading_assistant/api/application/EmailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/me/trading_assistant/api/controller/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/me/trading_assistant/api/controller/AccountControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/me/trading_assistant/api/domain/CandleDTOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/me/trading_assistant/api/domain/CandleDTOTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/me/trading_assistant/api/infrastructure/AccountRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/me/trading_assistant/api/infrastructure/AccountRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/me/trading_assistant/api/infrastructure/UserAlertRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/me/trading_assistant/api/infrastructure/UserAlertRepositoryTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="cb1e8f13-6d03-4242-b606-85bd519041ad" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -206,7 +198,7 @@
       <workItem from="1744898761271" duration="4969000" />
       <workItem from="1744919620988" duration="936000" />
       <workItem from="1744959066642" duration="739000" />
-      <workItem from="1744980421598" duration="2819000" />
+      <workItem from="1744980421598" duration="3459000" />
     </task>
     <servers />
   </component>
@@ -221,6 +213,6 @@
     <SUITE FILE_PATH="coverage/trading_assistant_gr1_api$UserAlertControllerTest.ic" NAME="UserAlertControllerTest Coverage Results" MODIFIED="1744919662861" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>me.trading_assistant.api.controller.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/trading_assistant_gr1_api$java_in_api.ic" NAME="java in api Coverage Results" MODIFIED="1744983133177" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/trading_assistant_gr1_api$java_in_api.ic" NAME="java in api Coverage Results" MODIFIED="1744983240997" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
   </component>
 </project>
