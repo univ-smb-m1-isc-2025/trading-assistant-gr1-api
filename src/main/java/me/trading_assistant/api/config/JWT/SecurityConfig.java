@@ -28,6 +28,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/api/users").permitAll() // Routes publiques
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll()// Routes publiques
                 .requestMatchers(
                     "/api/users/login",

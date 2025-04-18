@@ -71,4 +71,12 @@ public class UserAlertController {
         userAlertService.removeAlert(alertId);
         return ResponseEntity.ok("Alerte supprimée avec succès");
     }
+
+
+    @PostMapping("/check-alerts")
+    @Operation(summary = "Vérifier les alertes et envoyer des emails")
+    public ResponseEntity<?> checkAlerts() {
+        userAlertService.checkAndSendAlerts();
+        return ResponseEntity.ok("Vérification des alertes terminée et emails envoyés si nécessaire.");
+    }
 }

@@ -10,6 +10,7 @@ public class EmailService {
 
     @Autowired
     private JavaMailSender mailSender;
+    
 
     public void envoyerEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
