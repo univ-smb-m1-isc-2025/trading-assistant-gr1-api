@@ -1,16 +1,17 @@
 package me.trading_assistant.api.application;
 
-import me.trading_assistant.api.infrastructure.Account;
-import me.trading_assistant.api.infrastructure.UserAlert;
-import me.trading_assistant.api.infrastructure.UserAlertRepository;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import me.trading_assistant.api.infrastructure.Account;
+import me.trading_assistant.api.infrastructure.UserAlert;
+import me.trading_assistant.api.infrastructure.UserAlertRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -61,19 +62,30 @@ public class UserAlertService {
         return userAlertRepository.save(alert);
     }
 
+
+
     // Vérifier les alertes et envoyer des emails si nécessaire
     public void checkAndSendAlerts() {
-        // Récupérer toutes les alertes
+        System.out.println("Début de la vérification des alertes...");
         List<UserAlert> alerts = userAlertRepository.findAll();
-
+    
         for (UserAlert alert : alerts) {
-            // Vérifier si la condition de l'alerte est atteinte
-            if (isAlertConditionMet(alert)) {
-                // Envoyer un email à l'utilisateur
-                sendAlertEmail(alert);
+            try {
+                if (isAlertConditionMet(alert)) {
+                    System.out.println("Condition atteinte pour l'alerte : " + alert.getId());
+                    sendAlertEmail(alert);
+                } else {
+                    System.out.println("Condition non atteinte pour l'alerte : " + alert.getId());
+                }
+            } catch (Exception e) {
+                System.err.println("Erreur lors de la vérification de l'alerte ID : " + alert.getId());
+                e.printStackTrace();
             }
         }
+        System.out.println("Vérification des alertes terminée.");
     }
+
+
 
     // Vérifie si la condition de l'alerte est atteinte
     private boolean isAlertConditionMet(UserAlert alert) {
@@ -139,7 +151,6 @@ public class UserAlertService {
     // Récupère les données des chandeliers pour un symbole donné
     private List<Map<String, Object>> getCandles(String symbol, Integer days) {
         try {
-            // Appel à l'API Yahoo Finance pour récupérer les chandeliers
             Map<String, Object> response = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/v8/finance/chart/" + symbol)
@@ -149,85 +160,100 @@ public class UserAlertService {
                     .retrieve()
                     .bodyToMono(Map.class)
                     .block();
-    
+
             if (response == null || !response.containsKey("chart")) {
                 System.err.println("Réponse invalide ou vide pour le symbole : " + symbol);
-                return null;
+                return new ArrayList<>();
             }
-    
+
             Map<String, Object> chart = (Map<String, Object>) response.get("chart");
             List<Object> results = (List<Object>) chart.get("result");
-    
+
             if (results == null || results.isEmpty()) {
                 System.err.println("Aucun résultat trouvé pour le symbole : " + symbol);
-                return null;
+                return new ArrayList<>();
             }
-    
+
             Map<String, Object> result = (Map<String, Object>) results.get(0);
             Map<String, Object> indicators = (Map<String, Object>) result.get("indicators");
-    
+
             if (indicators == null || !indicators.containsKey("quote")) {
-                System.err.println("Indicateurs manquants pour le symbole : " + symbol);
-                return null;
+                System.err.println("Les indicateurs de citation sont manquants pour le symbole : " + symbol);
+                return new ArrayList<>();
             }
-    
+
             List<Object> quotes = (List<Object>) indicators.get("quote");
             if (quotes == null || quotes.isEmpty()) {
-                System.err.println("Données de cotation manquantes pour le symbole : " + symbol);
-                return null;
+                System.err.println("Les données de citation sont vides pour le symbole : " + symbol);
+                return new ArrayList<>();
             }
-    
+
             Map<String, Object> quote = (Map<String, Object>) quotes.get(0);
+            List<Double> opens = (List<Double>) quote.get("open");
+            List<Double> highs = (List<Double>) quote.get("high");
+            List<Double> lows = (List<Double>) quote.get("low");
             List<Double> closes = (List<Double>) quote.get("close");
             List<Long> timestamps = (List<Long>) result.get("timestamp");
-            List<Double> volumes = (List<Double>) quote.get("volume");
-    
-            if (closes == null || timestamps == null || volumes == null) {
-                System.err.println("Données de chandeliers manquantes pour le symbole : " + symbol);
-                return null;
+
+            if (opens == null || highs == null || lows == null || closes == null || timestamps == null) {
+                System.err.println("Données des chandeliers incomplètes pour le symbole : " + symbol);
+                return new ArrayList<>();
             }
-    
-            // Construire la liste des chandeliers
-            List<Map<String, Object>> candles = new java.util.ArrayList<>();
-            for (int i = 0; i < closes.size(); i++) {
-                Map<String, Object> candle = new java.util.HashMap<>();
-                candle.put("close", closes.get(i));
+
+            List<Map<String, Object>> candles = new ArrayList<>();
+            for (int i = 0; i < timestamps.size(); i++) {
+                Map<String, Object> candle = new HashMap<>();
                 candle.put("timestamp", timestamps.get(i));
-                candle.put("volume", volumes.get(i));
-    
-                // Ajouter les patterns détectés (si applicable)
+                candle.put("open", opens.get(i));
+                candle.put("high", highs.get(i));
+                candle.put("low", lows.get(i));
+                candle.put("close", closes.get(i));
+
+                // Ajouter les patterns détectés
                 List<String> patterns = detectPatternsForCandle(candle);
                 candle.put("patterns", patterns);
-    
+
                 candles.add(candle);
             }
-    
+
             return candles;
-    
         } catch (Exception e) {
             System.err.println("Erreur lors de la récupération des chandeliers pour le symbole : " + symbol);
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
+    
 
     private List<String> detectPatternsForCandle(Map<String, Object> candle) {
-        // Exemple de détection de patterns
         List<String> patterns = new ArrayList<>();
 
-        // Exemple : Ajouter un pattern "Doji" si les conditions sont remplies
         Double open = (Double) candle.get("open");
         Double close = (Double) candle.get("close");
         Double high = (Double) candle.get("high");
         Double low = (Double) candle.get("low");
 
-        if (open != null && close != null && high != null && low != null) {
-            double bodySize = Math.abs(close - open);
-            double totalSize = high - low;
+        if (open == null || close == null || high == null || low == null) {
+            System.err.println("Données manquantes pour détecter les patterns : " + candle);
+            return patterns;
+        }
 
-            if (bodySize <= totalSize * 0.1) {
-                patterns.add("Doji");
-            }
+        double bodySize = Math.abs(close - open);
+        double totalSize = high - low;
+
+        // Détection d'un Doji
+        if (bodySize <= totalSize * 0.1) {
+            patterns.add("Doji");
+        }
+
+        // Exemple : Détection d'un Bullish Engulfing
+        if (close > open && bodySize > totalSize * 0.5) {
+            patterns.add("Bullish Engulfing");
+        }
+
+        // Exemple : Détection d'un Bearish Engulfing
+        if (open > close && bodySize > totalSize * 0.5) {
+            patterns.add("Bearish Engulfing");
         }
 
         return patterns;
@@ -265,7 +291,6 @@ public class UserAlertService {
     }
 
 
-
     // Vérifie une alerte de type "pattern_detection"
     private boolean checkPatternDetection(UserAlert alert) {
         // Récupérer les données des chandeliers pour le symbole
@@ -288,6 +313,8 @@ public class UserAlertService {
         System.out.println("Pattern non détecté : " + alert.getPattern() + " pour le symbole : " + alert.getSymbol());
         return false; // Pattern non détecté
     }
+
+
 
     // Vérifie une alerte de type "price_breakout"
     private boolean checkPriceBreakout(UserAlert alert) {
