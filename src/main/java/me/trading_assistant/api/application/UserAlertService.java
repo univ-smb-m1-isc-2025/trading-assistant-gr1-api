@@ -19,7 +19,7 @@ public class UserAlertService {
 
     private final UserAlertRepository userAlertRepository;
     private final EmailService emailService;
-    private final WebClient webClient = WebClient.create("https://query1.finance.yahoo.com"); // API Yahoo Finance
+    private final WebClient webClient = WebClient.create("https://query1.finance.yahoo.com");
 
     // Récupérer les alertes d'un utilisateur par son ID
     public List<UserAlert> getAlertsByUserId(Long userId) {
@@ -62,30 +62,21 @@ public class UserAlertService {
         return userAlertRepository.save(alert);
     }
 
-
-
     // Vérifier les alertes et envoyer des emails si nécessaire
     public void checkAndSendAlerts() {
-        System.out.println("Début de la vérification des alertes...");
         List<UserAlert> alerts = userAlertRepository.findAll();
-    
+
         for (UserAlert alert : alerts) {
             try {
                 if (isAlertConditionMet(alert)) {
-                    System.out.println("Condition atteinte pour l'alerte : " + alert.getId());
                     sendAlertEmail(alert);
-                } else {
-                    System.out.println("Condition non atteinte pour l'alerte : " + alert.getId());
                 }
             } catch (Exception e) {
                 System.err.println("Erreur lors de la vérification de l'alerte ID : " + alert.getId());
                 e.printStackTrace();
             }
         }
-        System.out.println("Vérification des alertes terminée.");
     }
-
-
 
     // Vérifie si la condition de l'alerte est atteinte
     private boolean isAlertConditionMet(UserAlert alert) {
@@ -113,38 +104,26 @@ public class UserAlertService {
 
     // Vérifie une alerte de type "moving_average_cross"
     private boolean checkMovingAverageCross(UserAlert alert) {
-        // Récupérer les données des chandeliers pour le symbole
         List<Map<String, Object>> candles = getCandles(alert.getSymbol(), alert.getDays());
-        if (candles == null || candles.isEmpty()) {
-            System.err.println("Aucune donnée de chandeliers trouvée pour le symbole : " + alert.getSymbol());
-            return false;
-        }
-    
-        // Calculer les moyennes mobiles pour les périodes actuelles et précédentes
-        double shortMA = calculateMovingAverage(candles, 5); // Moyenne mobile courte (5 périodes)
-        double longMA = calculateMovingAverage(candles, 20); // Moyenne mobile longue (20 périodes)
-    
-        // Vérifier si un croisement s'est produit
+        if (candles.isEmpty()) return false;
+
+        double shortMA = calculateMovingAverage(candles, 5);
+        double longMA = calculateMovingAverage(candles, 20);
         double previousShortMA = calculateMovingAverage(candles.subList(0, candles.size() - 1), 5);
         double previousLongMA = calculateMovingAverage(candles.subList(0, candles.size() - 1), 20);
-    
+
         return previousShortMA <= previousLongMA && shortMA > longMA;
     }
-    
+
+    // Calculer une moyenne mobile
     private double calculateMovingAverage(List<Map<String, Object>> candles, int period) {
-        if (candles.size() < period) {
-            return 0.0; // Pas assez de données pour calculer la moyenne
-        }
-    
+        if (candles.size() < period) return 0.0;
+
         double sum = 0.0;
         for (int i = candles.size() - period; i < candles.size(); i++) {
-            Map<String, Object> candle = candles.get(i);
-            Double close = (Double) candle.get("close");
-            if (close != null) {
-                sum += close;
-            }
+            Double close = (Double) candles.get(i).get("close");
+            if (close != null) sum += close;
         }
-    
         return sum / period;
     }
 
@@ -161,44 +140,24 @@ public class UserAlertService {
                     .bodyToMono(Map.class)
                     .block();
 
-            if (response == null || !response.containsKey("chart")) {
-                System.err.println("Réponse invalide ou vide pour le symbole : " + symbol);
-                return new ArrayList<>();
-            }
+            if (response == null || !response.containsKey("chart")) return new ArrayList<>();
 
             Map<String, Object> chart = (Map<String, Object>) response.get("chart");
             List<Object> results = (List<Object>) chart.get("result");
-
-            if (results == null || results.isEmpty()) {
-                System.err.println("Aucun résultat trouvé pour le symbole : " + symbol);
-                return new ArrayList<>();
-            }
+            if (results == null || results.isEmpty()) return new ArrayList<>();
 
             Map<String, Object> result = (Map<String, Object>) results.get(0);
             Map<String, Object> indicators = (Map<String, Object>) result.get("indicators");
+            if (indicators == null || !indicators.containsKey("quote")) return new ArrayList<>();
 
-            if (indicators == null || !indicators.containsKey("quote")) {
-                System.err.println("Les indicateurs de citation sont manquants pour le symbole : " + symbol);
-                return new ArrayList<>();
-            }
-
-            List<Object> quotes = (List<Object>) indicators.get("quote");
-            if (quotes == null || quotes.isEmpty()) {
-                System.err.println("Les données de citation sont vides pour le symbole : " + symbol);
-                return new ArrayList<>();
-            }
-
-            Map<String, Object> quote = (Map<String, Object>) quotes.get(0);
+            Map<String, Object> quote = (Map<String, Object>) ((List<Object>) indicators.get("quote")).get(0);
             List<Double> opens = (List<Double>) quote.get("open");
             List<Double> highs = (List<Double>) quote.get("high");
             List<Double> lows = (List<Double>) quote.get("low");
             List<Double> closes = (List<Double>) quote.get("close");
             List<Long> timestamps = (List<Long>) result.get("timestamp");
 
-            if (opens == null || highs == null || lows == null || closes == null || timestamps == null) {
-                System.err.println("Données des chandeliers incomplètes pour le symbole : " + symbol);
-                return new ArrayList<>();
-            }
+            if (opens == null || highs == null || lows == null || closes == null || timestamps == null) return new ArrayList<>();
 
             List<Map<String, Object>> candles = new ArrayList<>();
             for (int i = 0; i < timestamps.size(); i++) {
@@ -208,14 +167,9 @@ public class UserAlertService {
                 candle.put("high", highs.get(i));
                 candle.put("low", lows.get(i));
                 candle.put("close", closes.get(i));
-
-                // Ajouter les patterns détectés
-                List<String> patterns = detectPatternsForCandle(candle);
-                candle.put("patterns", patterns);
-
+                candle.put("patterns", detectPatternsForCandle(candle));
                 candles.add(candle);
             }
-
             return candles;
         } catch (Exception e) {
             System.err.println("Erreur lors de la récupération des chandeliers pour le symbole : " + symbol);
@@ -223,110 +177,60 @@ public class UserAlertService {
             return new ArrayList<>();
         }
     }
-    
 
+    // Détecter les patterns dans un chandelier
     private List<String> detectPatternsForCandle(Map<String, Object> candle) {
         List<String> patterns = new ArrayList<>();
-
         Double open = (Double) candle.get("open");
         Double close = (Double) candle.get("close");
         Double high = (Double) candle.get("high");
         Double low = (Double) candle.get("low");
 
-        if (open == null || close == null || high == null || low == null) {
-            System.err.println("Données manquantes pour détecter les patterns : " + candle);
-            return patterns;
-        }
+        if (open == null || close == null || high == null || low == null) return patterns;
 
         double bodySize = Math.abs(close - open);
         double totalSize = high - low;
 
-        // Détection d'un Doji
-        if (bodySize <= totalSize * 0.1) {
-            patterns.add("Doji");
-        }
-
-        // Exemple : Détection d'un Bullish Engulfing
-        if (close > open && bodySize > totalSize * 0.5) {
-            patterns.add("Bullish Engulfing");
-        }
-
-        // Exemple : Détection d'un Bearish Engulfing
-        if (open > close && bodySize > totalSize * 0.5) {
-            patterns.add("Bearish Engulfing");
-        }
+        if (bodySize <= totalSize * 0.1) patterns.add("Doji");
+        if (close > open && bodySize > totalSize * 0.5) patterns.add("Bullish Engulfing");
+        if (open > close && bodySize > totalSize * 0.5) patterns.add("Bearish Engulfing");
 
         return patterns;
     }
 
-
     // Vérifie une alerte de type "volume_spike"
     private boolean checkVolumeSpike(UserAlert alert) {
-        // Récupérer les données des chandeliers pour le symbole
         List<Map<String, Object>> candles = getCandles(alert.getSymbol(), alert.getDays());
-        if (candles == null || candles.isEmpty()) {
-            System.err.println("Aucune donnée de chandeliers trouvée pour le symbole : " + alert.getSymbol());
-            return false;
-        }
-    
-        if (alert.getThreshold() == null) {
-            System.err.println("Seuil de volume non défini pour l'alerte de type 'volume_spike'.");
-            return false;
-        }
-    
-        // Vérifier si le volume dépasse le seuil
-        for (Map<String, Object> candle : candles) {
-            if (!candle.containsKey("volume")) {
-                System.err.println("Donnée de volume manquante pour un chandelier.");
-                continue;
-            }
-    
-            Double volume = (Double) candle.get("volume");
-            if (volume != null && volume >= alert.getThreshold()) {
-                return true; // Pic de volume détecté
-            }
-        }
-    
-        return false; // Aucun pic de volume détecté
-    }
+        if (candles.isEmpty() || alert.getThreshold() == null) return false;
 
+        for (Map<String, Object> candle : candles) {
+            Double volume = (Double) candle.get("volume");
+            if (volume != null && volume >= alert.getThreshold()) return true;
+        }
+        return false;
+    }
 
     // Vérifie une alerte de type "pattern_detection"
     private boolean checkPatternDetection(UserAlert alert) {
-        // Récupérer les données des chandeliers pour le symbole
         List<Map<String, Object>> candles = getCandles(alert.getSymbol(), alert.getDays());
+        if (candles.isEmpty()) return false;
 
-        if (candles == null || candles.isEmpty()) {
-            System.err.println("Aucune donnée de chandeliers trouvée pour le symbole : " + alert.getSymbol());
-            return false;
-        }
-
-        // Vérifier si le pattern attendu est présent dans les chandeliers
         for (Map<String, Object> candle : candles) {
             List<String> patterns = (List<String>) candle.get("patterns");
-            if (patterns != null && patterns.contains(alert.getPattern())) {
-                System.out.println("Pattern détecté : " + alert.getPattern() + " pour le symbole : " + alert.getSymbol());
-                return true; // Pattern détecté
-            }
+            if (patterns != null && patterns.contains(alert.getPattern())) return true;
         }
-
-        System.out.println("Pattern non détecté : " + alert.getPattern() + " pour le symbole : " + alert.getSymbol());
-        return false; // Pattern non détecté
+        return false;
     }
-
-
 
     // Vérifie une alerte de type "price_breakout"
     private boolean checkPriceBreakout(UserAlert alert) {
         Double currentPrice = getCurrentPrice(alert.getSymbol());
         return currentPrice != null && alert.getPriceLevel() != null && currentPrice >= alert.getPriceLevel();
     }
-    
 
     // Récupère le prix actuel d'une action depuis l'API Yahoo Finance
     private Double getCurrentPrice(String symbol) {
         try {
-            // Appel à l'API Yahoo Finance
             Map<String, Object> response = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/v8/finance/chart/" + symbol)
@@ -337,49 +241,21 @@ public class UserAlertService {
                     .bodyToMono(Map.class)
                     .block();
 
-            // Vérification de la structure de la réponse
-            if (response == null || !response.containsKey("chart")) {
-                System.err.println("Réponse invalide ou vide pour le symbole : " + symbol);
-                return null;
-            }
+            if (response == null || !response.containsKey("chart")) return null;
 
             Map<String, Object> chart = (Map<String, Object>) response.get("chart");
             List<Object> results = (List<Object>) chart.get("result");
-
-            if (results == null || results.isEmpty()) {
-                System.err.println("Aucun résultat trouvé pour le symbole : " + symbol);
-                return null;
-            }
+            if (results == null || results.isEmpty()) return null;
 
             Map<String, Object> result = (Map<String, Object>) results.get(0);
             Map<String, Object> indicators = (Map<String, Object>) result.get("indicators");
+            if (indicators == null || !indicators.containsKey("quote")) return null;
 
-            if (indicators == null || !indicators.containsKey("quote")) {
-                System.err.println("Indicateurs manquants pour le symbole : " + symbol);
-                return null;
-            }
-
-            List<Object> quotes = (List<Object>) indicators.get("quote");
-            if (quotes == null || quotes.isEmpty()) {
-                System.err.println("Données de cotation manquantes pour le symbole : " + symbol);
-                return null;
-            }
-
-            Map<String, Object> quote = (Map<String, Object>) quotes.get(0);
-            if (!quote.containsKey("close")) {
-                System.err.println("Données de clôture manquantes pour le symbole : " + symbol);
-                return null;
-            }
-
+            Map<String, Object> quote = (Map<String, Object>) ((List<Object>) indicators.get("quote")).get(0);
             List<Double> closes = (List<Double>) quote.get("close");
-            if (closes == null || closes.isEmpty()) {
-                System.err.println("Données de clôture manquantes pour le symbole : " + symbol);
-                return null;
-            }
+            if (closes == null || closes.isEmpty()) return null;
 
-            // Retourner le dernier prix de clôture
             return closes.get(closes.size() - 1);
-
         } catch (Exception e) {
             System.err.println("Erreur lors de la récupération du prix pour le symbole : " + symbol);
             e.printStackTrace();
@@ -390,64 +266,50 @@ public class UserAlertService {
     // Envoie un email à l'utilisateur pour une alerte atteinte
     private void sendAlertEmail(UserAlert alert) {
         Account user = alert.getUser();
-        if (user == null || user.getEmail() == null) {
-            System.err.println("Utilisateur ou email manquant pour l'alerte.");
-            return;
-        }
-    
+        if (user == null || user.getEmail() == null) return;
+
         String email = user.getEmail();
         String subject = "Alerte atteinte pour " + alert.getSymbol();
-    
-        // Construire le contenu de l'email en fonction du type d'alerte
         StringBuilder textBuilder = new StringBuilder();
         textBuilder.append("Bonjour ").append(user.getFirstname() != null ? user.getFirstname() : "Utilisateur").append(",\n\n");
         textBuilder.append("Votre alerte pour le symbole ").append(alert.getSymbol()).append(" a été atteinte.\n");
-    
+
         switch (alert.getAlertType()) {
             case "moving_average_cross":
                 textBuilder.append("Type d'alerte : Croisement de moyennes mobiles.\n");
-                if (alert.getDays() != null) {
-                    textBuilder.append("- Nombre de jours pour la moyenne mobile : ").append(alert.getDays()).append("\n");
-                }
+                textBuilder.append("Période courte : 5 jours, Période longue : 20 jours.\n");
                 break;
-    
             case "price_variation":
                 textBuilder.append("Type d'alerte : Variation de prix.\n");
-                if (alert.getThreshold() != null) {
-                    textBuilder.append("- Seuil de variation : ").append(alert.getThreshold()).append("%\n");
+                textBuilder.append("Seuil demandé : ").append(alert.getThreshold()).append("%.\n");
+                Double currentPrice = getCurrentPrice(alert.getSymbol());
+                if (currentPrice != null) {
+                    textBuilder.append("Prix actuel : ").append(currentPrice).append(" USD.\n");
                 }
                 break;
-    
             case "volume_spike":
                 textBuilder.append("Type d'alerte : Pic de volume.\n");
-                if (alert.getThreshold() != null) {
-                    textBuilder.append("- Seuil de volume : ").append(alert.getThreshold()).append("\n");
-                }
+                textBuilder.append("Seuil de volume demandé : ").append(alert.getThreshold()).append(".\n");
                 break;
-    
             case "pattern_detection":
                 textBuilder.append("Type d'alerte : Détection de pattern.\n");
-                if (alert.getPattern() != null) {
-                    textBuilder.append("- Pattern détecté : ").append(alert.getPattern()).append("\n");
-                }
+                textBuilder.append("Pattern demandé : ").append(alert.getPattern()).append(".\n");
+                textBuilder.append("Pattern(s) détecté(s) : ").append(alert.getPattern()).append(".\n");
                 break;
-    
             case "price_breakout":
                 textBuilder.append("Type d'alerte : Franchissement de seuil de prix.\n");
-                if (alert.getPriceLevel() != null) {
-                    textBuilder.append("- Niveau de prix : ").append(alert.getPriceLevel()).append("\n");
+                textBuilder.append("Seuil demandé : ").append(alert.getPriceLevel()).append(" USD.\n");
+                Double breakoutPrice = getCurrentPrice(alert.getSymbol());
+                if (breakoutPrice != null) {
+                    textBuilder.append("Prix actuel : ").append(breakoutPrice).append(" USD.\n");
                 }
                 break;
-    
             default:
                 textBuilder.append("Type d'alerte : Inconnu.\n");
                 break;
         }
-    
-        textBuilder.append("\nCordialement,\n");
-        textBuilder.append("L'équipe Trading Assistant");
-    
-        // Envoyer l'email
+
+        textBuilder.append("\nCordialement,\nL'équipe TradeMate !");
         emailService.envoyerEmail(email, subject, textBuilder.toString());
     }
 }
