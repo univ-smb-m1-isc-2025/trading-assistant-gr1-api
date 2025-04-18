@@ -10,6 +10,11 @@ public class EmailService {
 
     @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
     
 
     public void envoyerEmail(String to, String subject, String text) {

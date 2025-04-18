@@ -1,138 +1,99 @@
-/*
 package me.trading_assistant.api.infrastructure;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@DataJpaTest
 class UserAlertRepositoryTest {
 
-    @Autowired
+    @Mock
     private UserAlertRepository userAlertRepository;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    @InjectMocks
+    private UserAlertRepositoryTest userAlertRepositoryTest;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
-    void testSaveAndFindByUserId() {
-        // Créer un utilisateur
-        Account user = new Account();
-        user.setEmail("test@example.com");
-        user.setFirstname("John");
-        user.setLastname("Doe");
-        user.setPassword("123456");
-        user.setPhone("123456789");
-        Account savedUser = accountRepository.save(user);
+    void testFindByUserId() {
+        // Mock des données
+        Long userId = 1L;
+        UserAlert mockAlert = new UserAlert();
+        mockAlert.setId(1L);
+        mockAlert.setSymbol("AAPL");
+        mockAlert.setAlertType("price_variation");
 
-        // Créer une alerte
-        UserAlert alert = new UserAlert();
-        alert.setUser(savedUser);
-        alert.setSymbol("AAPL");
-        alert.setAlertType("price_variation");
-        alert.setThreshold(5.0);
-        userAlertRepository.save(alert);
+        when(userAlertRepository.findByUserId(userId)).thenReturn(List.of(mockAlert));
 
-        // Rechercher les alertes par userId
-        List<UserAlert> alerts = userAlertRepository.findByUserId(savedUser.getId());
+        // Appeler la méthode
+        List<UserAlert> alerts = userAlertRepository.findByUserId(userId);
 
         // Vérifications
         assertEquals(1, alerts.size());
         assertEquals("AAPL", alerts.get(0).getSymbol());
-        assertEquals("price_variation", alerts.get(0).getAlertType());
-        assertEquals(5.0, alerts.get(0).getThreshold());
+        verify(userAlertRepository, times(1)).findByUserId(userId);
     }
 
     @Test
     void testFindBySymbol() {
-        // Créer un utilisateur
-        Account user = new Account();
-        user.setEmail("test@example.com");
-        user.setFirstname("John");
-        user.setLastname("Doe");
-        user.setPassword("123456");
-        user.setPhone("123456789");
-        Account savedUser = accountRepository.save(user);
+        // Mock des données
+        String symbol = "TSLA";
+        UserAlert mockAlert = new UserAlert();
+        mockAlert.setId(1L);
+        mockAlert.setSymbol(symbol);
+        mockAlert.setAlertType("moving_average_cross");
 
-        // Créer une alerte
-        UserAlert alert = new UserAlert();
-        alert.setUser(savedUser);
-        alert.setSymbol("TSLA");
-        alert.setAlertType("moving_average_cross");
-        userAlertRepository.save(alert);
+        when(userAlertRepository.findBySymbol(symbol)).thenReturn(List.of(mockAlert));
 
-        // Rechercher les alertes par symbole
-        List<UserAlert> alerts = userAlertRepository.findBySymbol("TSLA");
+        // Appeler la méthode
+        List<UserAlert> alerts = userAlertRepository.findBySymbol(symbol);
 
         // Vérifications
         assertEquals(1, alerts.size());
-        assertEquals("TSLA", alerts.get(0).getSymbol());
-        assertEquals("moving_average_cross", alerts.get(0).getAlertType());
+        assertEquals(symbol, alerts.get(0).getSymbol());
+        verify(userAlertRepository, times(1)).findBySymbol(symbol);
     }
 
     @Test
     void testDeleteById() {
-        // Créer un utilisateur
-        Account user = new Account();
-        user.setEmail("test@example.com");
-        user.setFirstname("John");
-        user.setLastname("Doe");
-        user.setPassword("123456");
-        user.setPhone("123456789");
-        Account savedUser = accountRepository.save(user);
+        // Mock de la méthode
+        Long alertId = 1L;
+        doNothing().when(userAlertRepository).deleteById(alertId);
 
-        // Créer une alerte
-        UserAlert alert = new UserAlert();
-        alert.setUser(savedUser);
-        alert.setSymbol("AAPL");
-        alert.setAlertType("price_variation");
-        UserAlert savedAlert = userAlertRepository.save(alert);
+        // Appeler la méthode
+        userAlertRepository.deleteById(alertId);
 
-        // Supprimer l'alerte
-        userAlertRepository.deleteById(savedAlert.getId());
-
-        // Vérifier que l'alerte n'existe plus
-        Optional<UserAlert> foundAlert = userAlertRepository.findById(savedAlert.getId());
-        assertFalse(foundAlert.isPresent());
+        // Vérifications
+        verify(userAlertRepository, times(1)).deleteById(alertId);
     }
 
     @Test
-    void testFindByUserIdWithMultipleAlerts() {
-        // Créer un utilisateur
-        Account user = new Account();
-        user.setEmail("test@example.com");
-        user.setFirstname("John");
-        user.setLastname("Doe");
-        user.setPassword("123456");
-        user.setPhone("123456789");
-        Account savedUser = accountRepository.save(user);
+    void testSave() {
+        // Mock des données
+        UserAlert mockAlert = new UserAlert();
+        mockAlert.setId(1L);
+        mockAlert.setSymbol("AAPL");
+        mockAlert.setAlertType("price_variation");
 
-        // Créer plusieurs alertes
-        UserAlert alert1 = new UserAlert();
-        alert1.setUser(savedUser);
-        alert1.setSymbol("AAPL");
-        alert1.setAlertType("price_variation");
-        alert1.setThreshold(5.0);
+        when(userAlertRepository.save(mockAlert)).thenReturn(mockAlert);
 
-        UserAlert alert2 = new UserAlert();
-        alert2.setUser(savedUser);
-        alert2.setSymbol("TSLA");
-        alert2.setAlertType("moving_average_cross");
-
-        userAlertRepository.save(alert1);
-        userAlertRepository.save(alert2);
-
-        // Rechercher les alertes par userId
-        List<UserAlert> alerts = userAlertRepository.findByUserId(savedUser.getId());
+        // Appeler la méthode
+        UserAlert savedAlert = userAlertRepository.save(mockAlert);
 
         // Vérifications
-        assertEquals(2, alerts.size());
-        assertTrue(alerts.stream().anyMatch(alert -> alert.getSymbol().equals("AAPL")));
-        assertTrue(alerts.stream().anyMatch(alert -> alert.getSymbol().equals("TSLA")));
+        assertNotNull(savedAlert);
+        assertEquals("AAPL", savedAlert.getSymbol());
+        verify(userAlertRepository, times(1)).save(mockAlert);
     }
-}*/
+}

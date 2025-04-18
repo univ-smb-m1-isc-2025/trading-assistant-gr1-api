@@ -1,4 +1,3 @@
-/*
 package me.trading_assistant.api.domain;
 
 import org.junit.jupiter.api.Test;
@@ -58,4 +57,4 @@ class CandleDTOTest {
         // Vérification du message d'erreur
         assertEquals("Le timestamp doit être de type Long ou Integer", exception.getMessage());
     }
-}*/
+}
